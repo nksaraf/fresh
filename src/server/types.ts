@@ -1,10 +1,10 @@
-import { ComponentType } from "../runtime/deps.ts";
+import { React } from "../runtime/deps.ts";
 import { router } from "./deps.ts";
 import { PageConfig, PageProps } from "../runtime/types.ts";
 import { RenderContext, RenderFn } from "./render.tsx";
 
 export interface PageModule {
-  default: ComponentType<PageProps>;
+  default: React.ComponentType<PageProps>;
   config?: PageConfig;
 }
 
@@ -12,7 +12,7 @@ export interface Page {
   route: string;
   url: string;
   name: string;
-  component: ComponentType<PageProps>;
+  component: React.ComponentType<PageProps>;
   runtimeJS: boolean;
 }
 

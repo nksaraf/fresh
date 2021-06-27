@@ -4,7 +4,8 @@ import {
   getStyleTagProperties,
   virtualSheet,
 } from "https://esm.sh/twind/sheets";
-import { h, setup } from "../deps.ts";
+import { h } from "../deps.ts";
+import { setup } from 'https://esm.sh/twind/shim/server'
 import { RenderContext, RenderFn } from "../server_deps.ts";
 
 const sheet = virtualSheet();

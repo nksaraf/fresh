@@ -50,7 +50,7 @@ export class ServerContext {
       if (path.startsWith("/api/")) {
         const handlers = Object.fromEntries(
           Object.entries(module as ApiRouteModule).filter(([method]) =>
-            method === "default" || router.METHODS.includes(method)
+            method === "default" || router.METHODS.includes(method as typeof router.METHODS[0])
           ),
         );
         const apiRoute: ApiRoute = {
@@ -66,7 +66,7 @@ export class ServerContext {
           route,
           url,
           name,
-          component,
+          component: null as any,
           runtimeJS: config?.runtimeJS ?? true,
         };
         pages.push(page);
@@ -97,6 +97,8 @@ export class ServerContext {
         const preloads = this.#bundler.getPreloads(bundlePath).map(
           bundleAssetUrl,
         );
+        console.log(page)
+
         const body = await render({
           page,
           imports: page.runtimeJS ? imports : [],
@@ -104,6 +106,7 @@ export class ServerContext {
           renderer: this.#renderer,
           params: match.params,
         });
+        console.log(body)
         return new Response(body, {
           status: 200,
           headers: {
@@ -171,7 +174,7 @@ const DEFAULT_RENDERER: Renderer = {
   render(_ctx, render) {
     render();
   },
-  postRender(_ctx) {},
+  postRender(_ctx) { },
 };
 
 /**

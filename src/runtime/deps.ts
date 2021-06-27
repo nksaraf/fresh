@@ -1,23 +1,8 @@
-export * from "https://x.lcas.dev/preact@10.5.12/mod.js";
-export type {
-  CreateHandle,
-  EffectCallback,
-  Inputs,
-  PropRef,
-  Reducer,
-  Ref,
-  StateUpdater,
-} from "https://x.lcas.dev/preact@10.5.12/hooks.js";
-export {
-  useCallback,
-  useContext,
-  useDebugValue,
-  useEffect,
-  useErrorBoundary,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "https://x.lcas.dev/preact@10.5.12/hooks.js";
+import React from "https://cdn.skypack.dev/react@17.0.1?dts";
+export * as ReactDOM from "https://cdn.skypack.dev/react-dom@17.0.1?dts";
+export * from "https://cdn.skypack.dev/@react-three/fiber?dts";
+export * from "https://cdn.skypack.dev/twind/shim";
+
+export { React }
+export const h = React.createElement;
+export const Fragment = React.Fragment

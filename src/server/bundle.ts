@@ -32,6 +32,8 @@ export class Bundler {
     }
 
     await ensureEsbuildInialized();
+
+    console.log(import.meta.url)
     const bundle = await esbuild.build({
       bundle: true,
       entryPoints,
@@ -39,11 +41,11 @@ export class Bundler {
       jsxFactory: "h",
       jsxFragment: "Fragment",
       metafile: true,
-      minify: true,
+      // minify: true,
       outdir: `/`,
       outfile: "",
       platform: "neutral",
-      plugins: [freshPlugin(this.#pages), denoPlugin({ loader: "portable" })],
+      plugins: [freshPlugin(this.#pages), denoPlugin({ loader: "portable", importMapFile: "import_map.json" })],
       splitting: true,
       target: ["chrome89", "firefox88", "safari13"],
       treeShaking: true,
@@ -121,12 +123,12 @@ function freshPlugin(pageList: Page[]): esbuild.Plugin {
           if (!page) return null;
           const contents = `
 import Page from "${page.url}";
-import { h, render, DATA_CONTEXT } from "${runtime.href}";
+import { h, ReactDOM, DATA_CONTEXT } from "${runtime.href}";
 
 addEventListener("DOMContentLoaded", () => {
   const { params, data } = JSON.parse(document.getElementById("__FRSH_PROPS")?.textContent ?? "{}");
   try {
-    render(h(DATA_CONTEXT.Provider, { value: new Map(data ?? []) }, h(Page, { params: params ?? {} })), document.getElementById("__FRSH"));  
+    ReactDOM.render(h(DATA_CONTEXT.Provider, { value: new Map(data ?? []) }, h(Page, { params: params ?? {} })), document.getElementById("__FRSH"));  
   } catch(err) {
     if (err instanceof Promise) {
       console.error("Render tried to suspend without a suspense boundary.");

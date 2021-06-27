@@ -1,5 +1,5 @@
-import { generateUuid, renderToString } from "./deps.ts";
-import { ComponentChild, h } from "../runtime/deps.ts";
+import { generateUuid, ReactDOMServer } from "./deps.ts";
+import { React, h } from "../runtime/deps.ts";
 import { DATA_CONTEXT } from "../runtime/hooks.ts";
 import { Page, Renderer } from "./types.ts";
 
@@ -16,7 +16,7 @@ export type RenderFn = () => void;
 export class RenderContext {
   #id: string;
   #state: Map<string, unknown> = new Map();
-  #head: ComponentChild[] = [];
+  #head: React.ReactNode[] = [];
 
   constructor(id: string) {
     this.#id = id;
@@ -39,7 +39,7 @@ export class RenderContext {
   /**
    * Items to add to the <head> for this render.
    */
-  get head(): ComponentChild[] {
+  get head(): React.ReactNode[] {
     return this.#head;
   }
 }
@@ -62,7 +62,7 @@ export async function render(opts: RenderOptions): Promise<string> {
   const renderWithRenderer = (): string | Promise<string> => {
     if (++suspended > MAX_SUSPENSE_DEPTH) {
       throw new Error(
-        `Reached maximum suspense depth of ${MAX_SUSPENSE_DEPTH}.`,
+        `Reached maximum suspense depth of ${MAX_SUSPENSE_DEPTH}.`
       );
     }
 
@@ -71,7 +71,7 @@ export async function render(opts: RenderOptions): Promise<string> {
 
     function render() {
       try {
-        body = renderToString(vnode);
+        body = ReactDOMServer.renderToString(vnode);
       } catch (e) {
         if (e && e.then) {
           promise = e;
@@ -92,14 +92,16 @@ export async function render(opts: RenderOptions): Promise<string> {
     }
   };
 
-  const bodyHtml = await renderWithRenderer();
+  // const bodyHtml = await renderWithRenderer();
 
-  opts.renderer.postRender(ctx, bodyHtml);
+  // opts.renderer.postRender(ctx, bodyHtml);
 
-  let templateProps: {
-    params?: Record<string, string>;
-    data?: [string, unknown][];
-  } | undefined = { params: opts.params, data: [...dataCache.entries()] };
+  let templateProps:
+    | {
+        params?: Record<string, string>;
+        data?: [string, unknown][];
+      }
+    | undefined = { params: opts.params, data: [...dataCache.entries()] };
   if (Object.entries(templateProps.params!).length === 0) {
     delete templateProps.params;
   }
@@ -115,7 +117,7 @@ export async function render(opts: RenderOptions): Promise<string> {
   }
 
   const html = template({
-    bodyHtml,
+    bodyHtml: ``,
     imports: opts.imports,
     preloads: opts.preloads,
     head: ctx.head,
@@ -128,31 +130,37 @@ export async function render(opts: RenderOptions): Promise<string> {
 export interface TemplateOptions {
   bodyHtml: string;
   imports: string[];
-  head: ComponentChild[];
+  head: React.ReactNode[];
   preloads: string[];
   props: unknown;
 }
+
+console.log(ReactDOMServer);
 
 export function template(opts: TemplateOptions): string {
   const page = (
     <html>
       <head>
-        {opts.preloads.map((src) => <link rel="modulepreload" href={src} />)}
-        {opts.imports.map((src) => <script src={src} type="module"></script>)}
+        {opts.preloads.map((src) => (
+          <link rel="modulepreload" href={src} />
+        ))}
+        {opts.imports.map((src) => (
+          <script src={src} type="module"></script>
+        ))}
         {opts.head}
       </head>
       <body>
         <div dangerouslySetInnerHTML={{ __html: opts.bodyHtml }} id="__FRSH" />
-        {opts.props !== undefined
-          ? <script
+        {opts.props !== undefined ? (
+          <script
             id="__FRSH_PROPS"
             type="application/json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(opts.props) }}
           />
-          : null}
+        ) : null}
       </body>
     </html>
   );
 
-  return "<!DOCTYPE html>" + renderToString(page);
+  return "<!DOCTYPE html>" + ReactDOMServer.renderToString(page);
 }

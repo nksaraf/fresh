@@ -2,5 +2,11 @@
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": false,
-  "deno.config": "./tsconfig.json"
+  "deno.config": "./tsconfig.json",
+  "deno.importMap": "./import_map.json",
+  "deno.suggest.imports.hosts": {
+    "https://cdn.skypack.dev": true,
+    "https://e.dev": false,
+    "https://esm.s": false
+  }
 }

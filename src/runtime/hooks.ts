@@ -1,7 +1,7 @@
-import { createContext, useContext } from "./deps.ts";
+import { React } from "./deps.ts";
 import { IS_BROWSER } from "./utils.ts";
 
-export const DATA_CONTEXT = createContext(new Map<string, unknown>());
+export const DATA_CONTEXT = React.createContext(new Map<string, unknown>());
 
 export type Fetcher<T> = (key: string) => T | Promise<T>;
 
@@ -33,7 +33,7 @@ export type Fetcher<T> = (key: string) => T | Promise<T>;
  * @returns The the data that the promise returned from `fetcher` resolves to.
  */
 export function useData<T>(key: string, fetcher: Fetcher<T>): T {
-  const DATA_CACHE = useContext(DATA_CONTEXT);
+  const DATA_CACHE = React.useContext(DATA_CONTEXT);
 
   // If there is no data or pending promise for this key in the data cache yet,
   // call the fetcher, store it into the cache, and possibly suspend.
