@@ -50,6 +50,7 @@ export class Bundler {
       target: ["chrome89", "firefox88", "safari13"],
       treeShaking: true,
       write: false,
+      logLevel: 'debug'
     });
 
     const metafileOutputs = bundle.metafile!.outputs;
