@@ -31,8 +31,14 @@ export function denoPlugin(options: DenoPluginOptions = {}): esbuild.Plugin {
       build.onStart(async function onStart() {
         if (options.importMapFile !== undefined) {
           const url = toFileUrl(resolve(options.importMapFile));
-          const txt = await Deno.readTextFile(url);
-          importMap = importmap.parseFromString(txt, url);
+          try {
+            const txt = await Deno.readTextFile(url);
+            importMap = importmap.parseFromString(txt, url);
+            console.log(txt)
+          } catch (e) {
+            console.error(e);
+            throw e
+          }
         } else {
           importMap = null;
         }
