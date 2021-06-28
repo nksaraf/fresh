@@ -36,7 +36,7 @@ export function denoPlugin(options: DenoPluginOptions = {}): esbuild.Plugin {
             importMap = importmap.parseFromString(txt, url);
             console.log(txt)
           } catch (e) {
-            console.error(e);
+            console.error('ERROR WHILE LOADING IMPORT MAP: ', e);
             throw e
           }
         } else {
