@@ -34,40 +34,45 @@ export class Bundler {
     await ensureEsbuildInialized();
 
     console.log(import.meta.url)
-    const bundle = await esbuild.build({
-      bundle: true,
-      entryPoints,
-      format: "esm",
-      jsxFactory: "h",
-      jsxFragment: "Fragment",
-      metafile: true,
-      // minify: true,
-      outdir: `/`,
-      outfile: "",
-      platform: "neutral",
-      plugins: [freshPlugin(this.#pages), denoPlugin({ loader: "portable", importMapFile: "import_map.json" })],
-      splitting: true,
-      target: ["chrome89", "firefox88", "safari13"],
-      treeShaking: true,
-      write: false,
-      logLevel: 'debug'
-    });
+    try {
+      const bundle = await esbuild.build({
+        bundle: true,
+        entryPoints,
+        format: "esm",
+        jsxFactory: "h",
+        jsxFragment: "Fragment",
+        metafile: true,
+        // minify: true,
+        outdir: `/`,
+        outfile: "",
+        platform: "neutral",
+        plugins: [freshPlugin(this.#pages), denoPlugin({ loader: "portable", importMapFile: "import_map.json" })],
+        splitting: true,
+        target: ["chrome89", "firefox88", "safari13"],
+        treeShaking: true,
+        write: false,
+        logLevel: 'debug'
+      });
 
-    const metafileOutputs = bundle.metafile!.outputs;
+      const metafileOutputs = bundle.metafile!.outputs;
 
-    for (const path in metafileOutputs) {
-      const meta = metafileOutputs[path];
-      const imports = meta.imports
-        .filter(({ kind }) => kind === "import-statement")
-        .map(({ path }) => `/${path}`);
-      this.#preloads.set(`/${path}`, imports);
+      for (const path in metafileOutputs) {
+        const meta = metafileOutputs[path];
+        const imports = meta.imports
+          .filter(({ kind }) => kind === "import-statement")
+          .map(({ path }) => `/${path}`);
+        this.#preloads.set(`/${path}`, imports);
+      }
+
+      const cache = new Map<string, Uint8Array>();
+      for (const file of bundle.outputFiles) {
+        cache.set(file.path, file.contents);
+      }
+      this.#cache = cache;
+    } catch (e) {
+      console.log(e);
+      throw e
     }
-
-    const cache = new Map<string, Uint8Array>();
-    for (const file of bundle.outputFiles) {
-      cache.set(file.path, file.contents);
-    }
-    this.#cache = cache;
 
     return;
   }
