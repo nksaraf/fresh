@@ -23,4 +23,6 @@ globalThis.performance = {
 // @deno-types="https://unpkg.com/esbuild-wasm@0.11.19/esm/browser.d.ts"
 import * as esbuild from "https://gist.githubusercontent.com/lucacasonato/358c6b7e8198bfb2cf3d220e49fdcf5f/raw/3714cb0f59606eefc29ed0fea36d4cd93549938b/esbuild-wasm.js";
 export { esbuild };
-export { denoPlugin } from "https://raw.githubusercontent.com/nksaraf/esbuild_deno_loader/main/mod.ts";
+// export { denoPlugin } from "https://raw.githubusercontent.com/nksaraf/esbuild_deno_loader/main/mod.ts";
+
+export { denoPlugin } from "../../libs/esbuild_deno_loader/mod.ts"
