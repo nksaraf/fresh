@@ -32,9 +32,14 @@ export function denoPlugin(options: DenoPluginOptions = {}): esbuild.Plugin {
         if (options.importMapFile !== undefined) {
           const url = toFileUrl(resolve(options.importMapFile));
           try {
-            const txt = await Deno.readTextFile(url);
-            importMap = importmap.parseFromString(txt, url);
-            console.log(txt)
+            // const txt = await Deno.readTextFile(url);
+            importMap = importmap.parseFromString(`{
+              "imports": {
+                "fs": "./fs.ts"
+              }
+            }
+            `, url);
+            // console.log(txt)
           } catch (e) {
             console.error('ERROR WHILE LOADING IMPORT MAP: ', e);
             throw e
