@@ -29,24 +29,23 @@ export function denoPlugin(options: DenoPluginOptions = {}): esbuild.Plugin {
       let importMap: importmap.ParsedImportMap | null = null;
 
       build.onStart(async function onStart() {
-        if (options.importMapFile !== undefined) {
-          const url = toFileUrl(resolve(options.importMapFile));
-          try {
-            // const txt = await Deno.readTextFile(url);
-            importMap = importmap.parseFromString(`{
+        // if (options.importMapFile !== undefined) {
+        //   const url = toFileUrl(resolve(options.importMapFile));
+        //   try {
+        // const txt = await Deno.readTextFile(url);
+        importMap = importmap.parseFromString(`{
               "imports": {
                 "fs": "./fs.ts"
               }
-            }
-            `, url);
-            // console.log(txt)
-          } catch (e) {
-            console.error('ERROR WHILE LOADING IMPORT MAP: ', e);
-            throw e
-          }
-        } else {
-          importMap = null;
-        }
+            }`, new URL("https://denopkg.com/nksaraf/fresh@rect/"));
+        //     // console.log(txt)
+        //   } catch (e) {
+        //     console.error('ERROR WHILE LOADING IMPORT MAP: ', e);
+        //     throw e
+        //   }
+        // } else {
+        //   importMap = null;
+        // }
       });
 
       build.onResolve({ filter: /.*/ }, function onResolve(
