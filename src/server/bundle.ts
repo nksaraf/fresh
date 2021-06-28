@@ -126,6 +126,7 @@ function freshPlugin(pageList: Page[]): esbuild.Plugin {
           const url = new URL(args.path);
           const path = url.pathname;
           const page = pageMap.get(path);
+          console.log(page, path, pageMap)
           if (!page) return null;
           const contents = `
 import Page from "${page.url}";
