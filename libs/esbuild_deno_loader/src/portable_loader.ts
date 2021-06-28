@@ -9,7 +9,6 @@ export async function load(
   url: URL,
   _options: LoadOptions,
 ): Promise<esbuild.OnLoadResult | null> {
-  console.log('loading', url)
   switch (url.protocol) {
     case "http:":
     case "https:":
