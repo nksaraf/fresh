@@ -7,6 +7,16 @@
   "deno.suggest.imports.hosts": {
     "https://cdn.skypack.dev": true,
     "https://e.dev": false,
-    "https://esm.s": false
+    "https://esm.s": false,
+    "https://c": false,
+    "https://cdn.": false,
+    "https://cdn.s": false,
+    "https://cdn.sky": false,
+    "https://cdn.sk": false,
+    "https://cdn.skypack.": false,
+    "https://e": false,
+    "https://esm.": false,
+    "https://xn--oda": false,
+    "https://xn--6ch": false
   }
 }

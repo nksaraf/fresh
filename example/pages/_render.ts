@@ -3,9 +3,9 @@
 import {
   getStyleTagProperties,
   virtualSheet,
-} from "https://esm.sh/twind/sheets";
+} from "https://cdn.skypack.dev/twind/sheets";
 import { h } from "../deps.ts";
-import { setup } from 'https://esm.sh/twind/shim/server'
+import { setup } from 'https://cdn.skypack.dev/twind/shim/server'
 import { RenderContext, RenderFn } from "../server_deps.ts";
 
 const sheet = virtualSheet();
