@@ -14,11 +14,6 @@ export { lookup as mediaTypeLookup } from "https://deno.land/x/media_types@v2.8.
 // -- esbuild --
 const start = new Date().getTime();
 
-import React from "https://esm.sh/react@17.0.1";
-export { React }
-export const h = React.createElement;
-export const Fragment = React.Fragment
-
 // @ts-ignore not working
 globalThis.performance = {
   now() {

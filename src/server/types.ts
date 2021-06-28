@@ -1,4 +1,4 @@
-import { React } from "./deps.ts";
+import { React } from "../runtime/react.ts";
 import { router } from "./deps.ts";
 import { PageConfig, PageProps } from "../runtime/types.ts";
 import { RenderContext, RenderFn } from "./render.tsx";

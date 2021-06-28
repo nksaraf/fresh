@@ -1,4 +1,4 @@
-import { React } from "./deps.ts";
+import { React } from "./react.ts";
 import { IS_BROWSER } from "./utils.ts";
 
 export const DATA_CONTEXT = React.createContext(new Map<string, unknown>());

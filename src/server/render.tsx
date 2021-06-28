@@ -1,5 +1,5 @@
 import { generateUuid, ReactDOMServer } from "./deps.ts";
-import { React, h } from "./deps.ts";
+import { React, h } from "../runtime/react.ts";
 import { DATA_CONTEXT } from "../runtime/hooks.ts";
 import { Page, Renderer } from "./types.ts";
 
